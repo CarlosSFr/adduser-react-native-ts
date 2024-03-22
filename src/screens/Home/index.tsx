@@ -23,11 +23,8 @@ export function Home() {
             {
                 text: "Sim",
                 onPress: () => {
-                    const indexRemove = participants.indexOf(name);
-                    const newParticipants = participants.filter((item, index) => index !== indexRemove);
-
-                    setParticipants(newParticipants)
-                    Alert.alert("Deletado!")
+                    setParticipants(participants.filter(participant => participant !== name))
+                    // Rodrigo fez: setParticipants( prevState =>  prevState.filter(participant => participant !== name))
                 }
                 
             },
