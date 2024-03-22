@@ -4,31 +4,39 @@ import { Participant } from "../../components/Participant";
 import { useState } from "react";
 
 export function Home() {
+    //const participants = ["Carlos", "Shrek", "Cristiano", "Cleber", "Liz", "Giovanna", "Fiona", "Diego", "Rodrigo", "Burro do Shrek", "Robert"]
 
-    const participants = ["Carlos", "Shrek", "Cristiano", "Cleber", "Liz", "Giovanna", "Fiona", "Diego", "Rodrigo", "Burro do Shrek", "Robert"]
+    const [ participants, setParticipants ] = useState<string[]>([])
+    const [ participantName, setParticipantName ] = useState('')
 
     function handleParticipantAdd(){
-        console.log("Botão adicionar");
+        if(participants.includes(participantName)){
+            return Alert.alert("Participante existente", "Esse participante já está na lista!");
+        }
+        
+        setParticipants(prevState => [...participants, participantName])
+        setParticipantName("");
     }
 
     function handleParticipantRemove(name: string){
         Alert.alert("Remover", `Remover o participante ${name}?`, [
             {
                 text: "Sim",
-                onPress: () => Alert.alert("Deletado!")
+                onPress: () => {
+                    const indexRemove = participants.indexOf(name);
+                    const newParticipants = participants.filter((item, index) => index !== indexRemove);
+
+                    setParticipants(newParticipants)
+                    Alert.alert("Deletado!")
+                }
+                
             },
             {
                 text: "Não",
                 style: "cancel",
             }
         ])
-        //console.log(`Botão de remover o participante ${name}`)
-    
-        // const indexRemove = participants.findIndex(part => part == name);
-
-        // participants.splice(indexRemove, 1)
-
-        // return participants
+        
     }
 
   return (
@@ -43,6 +51,8 @@ export function Home() {
             style={styles.input} 
             placeholder="Nome do usuário"
             placeholderTextColor="#6b6b6b"
+            onChangeText={e => setParticipantName(e)} // pode colocar apenas setParticipantName
+            value={participantName}
             />
 
             <TouchableOpacity style={styles.button} onPress={handleParticipantAdd} >
